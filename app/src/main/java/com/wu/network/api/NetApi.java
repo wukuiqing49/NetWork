@@ -1,5 +1,7 @@
 package com.wu.network.api;
+
 import com.wu.net.retrofit.NetInit;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -15,13 +17,13 @@ import okhttp3.Request;
 
 
 public class NetApi extends NetInit {
+
     private static volatile NetApi sInstance;
 
-
     public NetApi() {
-        //设置BaseUrl
         super("http://tcq.qianxy.top/");
     }
+
     public static NetApi getInstance() {
         if (sInstance == null) {
             synchronized (NetApi.class) {
@@ -30,6 +32,12 @@ public class NetApi extends NetInit {
         }
         return sInstance;
     }
+
+    @Override
+    public   TestApi getMyService() {
+        return super.getService(TestApi.class);
+    }
+
     // 添加自定义Header
     @Override
     public Request.Builder addCustomHeader(Request.Builder builder) {

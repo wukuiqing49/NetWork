@@ -13,6 +13,8 @@ import com.wu.network.api.NetApi
 import com.wu.network.api.TestApi
 import com.wu.network.api.UserInfo
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity(),Observer {
@@ -20,6 +22,9 @@ class MainActivity : AppCompatActivity(),Observer {
         super.onCreate(savedInstanceState)
         SpecialCodeObservable.getInstance().addObserver(this)
         setContentView(R.layout.activity_main)
+
+
+        var hashMap=HashMap<String,String>()
         var info = object : NetInitInfo {
             override fun getAndroidVersionCode(): String {
                 return "1.0.0"
@@ -44,9 +49,13 @@ class MainActivity : AppCompatActivity(),Observer {
         }
 
         findViewById<Button>(R.id.bt_get).setOnClickListener {
-            NetApi.getInstance().getService(TestApi::class.java).userInfo.compose(
-                ResultObservableTransformer<BaseInfo<UserInfo>>(MainActivity@ this)
-            ).subscribe(object : DataListener<BaseInfo<UserInfo>>() {
+
+//            NetApi.getInstance().getService(TestApi::class.java).userInfo
+
+            NetApi.getInstance()
+                .getMyService()
+                .userInfo.compose(ResultObservableTransformer<BaseInfo<UserInfo>>(MainActivity@ this)).
+                subscribe(object : DataListener<BaseInfo<UserInfo>>() {
                 override fun onSuccess(t: BaseInfo<UserInfo>?) {
                     Log.e("", "")
                 }

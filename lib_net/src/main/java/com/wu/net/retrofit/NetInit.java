@@ -36,11 +36,11 @@ public abstract class NetInit {
         baseUrl = url;
     }
 
-    //初始化
+    //初始化  配置参数
     public static void init(NetInitInfo info) {
         logcatInfo = info;
     }
-
+    //初始化  配置参数
     public static void init(Context context, NetInitInfo info) {
         logcatInfo = info;
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getPackageName(), 0);
@@ -50,12 +50,20 @@ public abstract class NetInit {
     }
 
     // 获取Service
-    public <T> T getService(Class<T> tClass) {
+    protected   <T> T getService(Class<T> tClass) {
         return getRetrofit().create(tClass);
     }
 
+
+    /**
+     * 设置 实现的Api
+     * @param <T>
+     * @return
+     */
+    public abstract <T> T getMyService();
+
     // 获取Retrofit
-    private Retrofit getRetrofit() {
+    public Retrofit getRetrofit() {
 
         Retrofit.Builder builder = new Retrofit.Builder();
         Retrofit retrofit = builder
@@ -69,6 +77,7 @@ public abstract class NetInit {
 
 
     }
+
 
     private OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -99,5 +108,6 @@ public abstract class NetInit {
     }
 
     protected abstract Request.Builder addCustomHeader(Request.Builder builder);
+
 
 }
